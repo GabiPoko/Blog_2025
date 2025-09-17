@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+
+{% block contenido %}
+
+{% for i in posts %}
+
+<br>
+<li>{{i.titulo}}</li>
+<li>{{i.subtitulo}}</li>
+<li>{{i.categoria}}</li>
+    {% empty %}
+
+{% endfor %}
+
+
+<h1> Esta es la página de posts </h1>
+<h2> Gato </h2>
+
+{% endblock %}
