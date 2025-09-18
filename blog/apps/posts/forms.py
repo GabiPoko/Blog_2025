@@ -1,12 +1,13 @@
 from django import forms
-from .models import  Post, Categoria
+from .models import  Post, Categoria, Comentario
 
-'''
-lass ComentarioForm(forms.ModelForm):
+
+class ComentarioForm(forms.ModelForm):
     class Meta:
         model = Comentario
         fields = ['texto']
 
+'''
 class CrearPostForm (forms.ModelForm):
     class Meta:
         model = Post
