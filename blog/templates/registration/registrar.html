@@ -4,24 +4,38 @@
 {% block title %} Registro de usuario {% endblock title %}
 
 {% block contenido %}
-<center>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <h1 class="text-center">Registro de usuarios</h1>
+            <br>
+            <div class="messages text-center">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
 
-<form method="POST" enctype="multipart/form-data" style="margin-top: 30px; margin-bottom: 100px;">
-    <h1>Registro de usuarios</h1>
-    <br>
-    <div class="messages">
-        {% for message in messages %}
-        <table {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</table>
-        {% endfor %}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success btn-lg">Registrar</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <br>
-    {% csrf_token %}
-    <div class="container-fluid">
-        <table>{{ form }}</table>
-    </div>
-    <br><br>
-    <button type="submit" class="btn btn-success btn-lg px-3">Registrar</button>
-</form>
-
-</center>
+</div>
 {% endblock contenido %}
