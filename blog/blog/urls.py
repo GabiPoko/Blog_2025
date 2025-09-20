@@ -14,12 +14,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from logging import Handler
 from django.contrib import admin
 from django.urls import path, include 
-from .views import index
+from .views import index, pagina_404
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+handler404 = pagina_404
 
 
 urlpatterns = [
