@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Post, Comentario, Categoria
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .forms import ComentarioForm, CrearPostForm, NuevaCategoriaForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -61,6 +61,11 @@ class PostDetailView(DetailView):
             context['form'] = form
             return self.render_to_response(context)
 
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    form_class = CrearPostForm
+    template_name = 'posts/modificar_post.html'
+    success_url = reverse_lazy('apps.posts:posts')
 
 class ComentarioCreateView (LoginRequiredMixin, CreateView):
     model = Comentario
@@ -72,3 +77,8 @@ class ComentarioCreateView (LoginRequiredMixin, CreateView):
         form.instance.usuario = self.request.user
         form.instance.posts_id = self.kwargs['posts_id']
         return super().form_valid(form)
+
+class PostDeleteView(DeleteView):
+    model = Post
+    template_name = 'posts/eliminar_post.html'
+    success_url = reverse_lazy('apps.posts:posts')
