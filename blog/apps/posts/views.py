@@ -3,7 +3,7 @@ from .models import Post, Comentario, Categoria
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .forms import ComentarioForm, CrearPostForm, NuevaCategoriaForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 #Vista basada en clases
 
@@ -82,3 +82,23 @@ class PostDeleteView(DeleteView):
     model = Post
     template_name = 'posts/eliminar_post.html'
     success_url = reverse_lazy('apps.posts:posts')
+
+
+class ComentarioUpdateView(LoginRequiredMixin, UpdateView):
+    model = Comentario
+    form_class = ComentarioForm
+    template_name = 'comentario/comentario_form.html'
+
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        if next_url:
+            return next_url
+        else:
+            return reverse('apps.posts:post_individual', args=[self.object.posts.id])
+
+class ComentarioDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comentario
+    template_name = 'comentario/comentario_confirm_delete.html'
+
+    def get_success_url(self):
+        return reverse('apps.posts:post_individual', args=[self.object.posts.id])
