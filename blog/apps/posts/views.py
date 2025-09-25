@@ -33,6 +33,36 @@ class PostListView(ListView):
     template_name = "posts/posts.html"
     context_object_name = "posts"
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        # print(queryset)
+        # fecha
+        ordenar_por = self.request.GET.get("ordenar")
+        print(ordenar_por)
+        if ordenar_por == "fecha":
+            queryset = queryset.order_by("-fecha")
+        # alfabeticamente
+        elif ordenar_por == "alfabetico":
+            queryset = queryset.order_by("-titulo")
+
+        # por autor
+        autor = self.request.GET.get("autor")
+        if autor:
+            queryset = queryset.filter(autor__username=autor)
+
+        # por categorias
+        categoria = self.request.GET.get("categoria")
+        if categoria:
+            queryset = queryset.filter(categoria__nombre=categoria)
+
+        # print(queryset)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["categorias"] = Categoria.objects.all()
+        return context
+
 
 class PostDetailView(DetailView):
     model = Post
@@ -102,3 +132,14 @@ class ComentarioDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('apps.posts:post_individual', args=[self.object.posts.id])
+
+
+class CategoriaListView(ListView):
+    model = Categoria
+    template_name = 'posts/categoria_list.html'
+    context_object_name = 'categorias'
+
+class CategoriaDeleteView(DeleteView):
+    model = Categoria
+    template_name = 'posts/categoria_confirm_delete.html'
+    success_url = reverse_lazy('apps.posts:categoria_list')
