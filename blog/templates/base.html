@@ -4,55 +4,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Página de inicio{% endblock %}</title>
+    <title>{% block title %}BLOG GIORDANO BRUNO{% endblock %}</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <!-- El favicon o ícono de la solapa -->
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/ico">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
     <!-- Custom CSS -->
     {% block extra_css %}{% endblock %}
 </head>
 <body>
     <header>
         <a href="#">
-
         </a>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'index' %}">Mi Blog</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+        
+        <nav class="navbar navbar-expand-lg navbar-dark border-bottom border-white" style="background-color: #0a2b58;">
+            <div class="container">  <a class="navbar-brand" href="{% url 'apps.posts:posts' %}">
+              <img src="{% static 'img/GB.jpg' %}" alt="Logo" class="rounded-circle img-fluid" style="width: 100px; height: 100px; border: 2px solid #fcf9f9;">
+            </a>
+            <span class="navbar-text ml-auto" style= "font-family: 'Bangers', cursive; font-weight: 400; color: whitesmoke;"> G.B. BLOG DE CIENCIA
+            </span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'apps.posts:posts' %}">Posts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'apps.contacto:contacto' %}">Contacto</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Acerca de</a>
-                    </li>
-                    {% if user.is_authenticated %}
-                    <li>
-                        <form method="post" action="{% url 'apps.usuario:logout' %}" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" style="background: none; border: none; padding: 0; font: inherit; cursor: pointer;" class="btn btn-link text-white">
-                               {{ user.username }} : Logout
-                            </button>
-                        </form>
-                    </li>
-                    {% else %}
-                        <li><a href="{% url 'apps.usuario:login' %}">Login</a></li>
-                    {% endif %}
+                <ul class="navbar-nav ms-auto align-items-center">
+                  <li class="nav-item">
+                    <a class="nav-link text-light" href="{% url 'apps.posts:posts' %}">Posts</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-light" href="{% url 'apps.contacto:contacto' %}">Contacto</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link text-light" href="{% url 'index' %}">Acerca de</a>
+                  </li>
+        
+                  {% if user.is_authenticated %}
+                  <li class="nav-item">
+                    <form method="post" action="{% url 'apps.usuario:logout' %}" class="d-inline">
+                      {% csrf_token %}
+                      <button type="submit" class="nav-link btn btn-link text-light p-0 m-0" style="text-decoration: none;">
+                        {{ user.username }} : Logout
+                      </button>
+                    </form>
+                  </li>
+                  {% else %}
+                  <li class="nav-item">
+                    <a class="nav-link text-light" href="{% url 'apps.usuario:login' %}">Login</a>
+                  </li>
+                  {% endif %}
                 </ul>
+              </div>
             </div>
-        </div>
-    </nav>
-</header>
-    <!-- Main Content -->
-    <main>
+          </nav>
+        </header>
+        
+        <!-- Main Content -->
+        <main>
         {% block contenido %}
         {% endblock %}
     </main>

@@ -1,0 +1,18 @@
+.nav-link {
+    color: rgba(255, 255, 255, 0.85) !important; /* blanco más claro */
+    transition: color 0.2s ease;
+  }
+  
+  .nav-link:hover {
+    color: #ffffff !important; /* blanco puro al pasar el mouse */
+    text-decoration: underline;
+  }
+  
+  .navbar-nav .btn-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+  }
+  
+  .navbar-nav .btn-link:hover {
+    color: #ffffff !important;
+  }
+  
