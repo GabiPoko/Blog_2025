@@ -1,20 +1,29 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block contenido %}
 
-<center>
-    <div class="container-fluid" style="margin: 30px;">
-        <a id="boton_post" href="{% url 'apps.posts:crear_categoria' %}?next={% url 'apps.posts:post_update' pk=object.id %}">
-            Crear nueva categoria
-        </a>
-        <br>
-        <h1>Modificar post</h1>
+<body style="background-color: #212529;">
+    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.2;">
+        <img src="{% static 'img/fondo.png' %}" alt="Fondo" style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+
+<div class="container mt-5">  
+    <div class="row justify-content-center mb-5" style="margin-left: 50px;"> 
+        <div class="col-md-5 bg-dark text-light border border-white">
+            <div class="mb-4">
+        <a id="boton_post" href="{% url 'apps.posts:crear_categoria' %}?next={% url 'apps.posts:post_update' pk=object.id %}" class="btn btn-primary mt-2">Crear nueva categoría</a><br>
+        <h3>Modificar post</h3>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Guardar cambios">
         </form>
+</div>
     </div>
-</center>
+        </div>
+             </div>
+    
+</body>
 
 {% endblock %}

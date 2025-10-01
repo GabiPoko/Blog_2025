@@ -4,47 +4,58 @@
 
 
 {% block contenido %}
-<div class="container-fluid" style="margin: 200px;">
-
-
-        <!-- Contenedor de filtros de orden y categorías -->
-<div>
-    <div>
-        <div>
-            <a href="?ordenar=fecha">Ordenar por fecha</a>
-            <a href="?ordenar=alfabetico">Ordenar alfabéticamente</a>
-        </div>
+<body style="background-color: #212529;">
+    <div class="position-fixed top-0 start-0 w-100 h-100 z-n1 opacity-25">
+        <img src="{% static 'img/fondo.png' %}" alt="Fondo" class="w-100 h-100 object-fit-cover">
     </div>
-    <div>
-        <div>
-            <div>
-                <a href="{% url 'apps.posts:posts' %}">Todas las categorías</a>
-                {% for categoria in categorias %}
-                    <a href="?categoria={{categoria.nombre}}">{{categoria.nombre}}</a>
-                {% endfor %}
+
+    <!-- Contenedor de filtros de orden y categorías -->
+    <div class="container mt-3 text-center">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-auto">
+                <a href="?ordenar=fecha" class="btn btn-outline-light">Ordenar por fecha</a>
+                <a href="?ordenar=alfabetico" class="btn btn-outline-light">Ordenar alfabéticamente</a>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+            <div class="col-12 text-center">
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+                    <a href="{% url 'apps.posts:posts' %}" class="btn btn-outline-light">Todas las categorías</a>
+                    {% for categoria in categorias %}
+                        <a href="?categoria={{categoria.nombre}}" class="btn btn-outline-light">{{categoria.nombre}}</a>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-{% if user.is_superuser or request.user|has_group:"Colaborador" %}
-    <div class="container-fluid" style="margin-top: 300px;">
-        <a id="boton_post" href="{% url 'apps.posts:crear_post' %}">Crear nuevo post</a>
+    {% if user.is_superuser or request.user|has_group:"Colaborador" %}
+        <div class="text-center mt-4">
+            <a class="btn btn-success" href="{% url 'apps.posts:crear_post' %}">Crear nuevo post</a>
+        </div>
+    {% endif %}
+
+    <!-- Contenedor principal de los posts -->
+    <div class="container mt-5">
+        <div class="row">
+            {% for i in posts %}
+            <div class="col-12 col-sm-6 col-md-4 mb-4">
+                <div class="card h-100 shadow-lg">
+                    <img src="{{ i.imagen.url }}" class="card-img-top" alt="Imagen de noticia">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ i.titulo }}</h5>
+                        <p class="card-text flex-grow-1">{{ i.texto | truncatewords:15 }}
+                            <a href="{% url 'apps.posts:post_individual' i.id %}" class="text-decoration-none">seguir leyendo...</a>
+                        </p>
+                        <p class="card-text text-muted small">{{ i.categoria }}</p>
+                        <a href="?autor={{i.autor}}" class="text-decoration-none"><small>{{i.autor}}</small></a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <h1 class="text-center w-100">No hay registros</h1>
+            {% endfor %}
+        </div>
     </div>
-{% endif %}
-
-{% for i in posts %}
-    <br>
-    <li>{{ i.titulo }}</li>
-    <li>{{ i.subtitulo }}</li>
-    <li>{{ i.categoria }}</li>
-    <br>
-    <a id="boton_post" href="{% url 'apps.posts:post_individual' i.id %}">
-        Ingresá a este Post
-    </a>
-{% empty %}
-    <h1>No hay registros</h1>
-{% endfor %}
-
-</div>
+</body>
 {% endblock %}
